@@ -1,0 +1,76 @@
+/** { border: 1px dashed red; }*/
+  #wrapper{
+    margin: 2%;
+    width: 95%;
+    text-align: center;
+  }
+  form{
+    margin-bottom: 0;
+  }
+  .error{
+    color: red;
+    font-size: 10pt;
+    font-weight: bold;
+    /*display: inline-block;
+    position: relative;
+    left: 5%;*/
+    margin: 0;
+  }
+  .errdiv{
+    position: relative;
+    left: 35%;
+    text-align: left;
+    width: 60%;
+  }
+  fieldset{
+    display: inline-block;
+    margin:1%;
+    padding: 1%;
+    width: 45%;
+    border-radius: 5px;
+    border: 1px dashed silver;
+    position: relative;
+    vertical-align: top;
+  }
+  legend{
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: left;
+  }
+  label{
+    position: absolute;
+    left: 5%;
+    width: 25%;
+    margin: 10px 5px 10px 5px;
+  }
+  input[type='text']{
+    width: 60%;
+    position: relative;;
+    left: 15%;
+    margin: 10px;
+  }
+  input[type='date']{
+    width: 40%;
+    position: relative;;
+    left: 5%;
+    margin: 10px;
+  }
+  input[type='password']{
+    width: 60%;
+    position: relative;;
+    left: 15%;
+    margin: 10px;
+  }
+  input[type='submit']{
+    margin-top: 20px;
+    position: relative;
+    left: 30%;
+  }
+  a{
+    position: relative;
+    left: 50%;
+  }
+  /*h1{
+    color: grey;
+    display: inline-block;
+  }*/

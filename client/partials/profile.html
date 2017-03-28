@@ -1,0 +1,14 @@
+<div class="" ng-controller="UsersController">
+<p class="error" ng-if='successmessage'>{{successmessage}}</p>
+  <h1>Welcome:&nbsp{{user.username}}</h1>
+  <a href ng-click=logout(user._id)>Logout</a></br>
+<!-- with all the data we can then construct a more structured output -->
+  <!-- <h3 for="">Password:&nbsp{{user.passwordHash}}</h3></br> -->
+  <!-- <h3 for="">Password:&nbsp{{password}}</h3></br> -->
+  <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br>
+  <hr>
+  <p class="error" ng-if='iomessage'>{{iomessage}}</p>
+  <p>{{userlist}}</p>
+  <!-- <p>{{test}}</p> -->
+  <p ng-repeat='id in userlist'>{{id}}&nbsp{{userlist[id]}}</p>
+</div>

@@ -1,0 +1,33 @@
+<div class="" ng-controller="UsersController">
+  <p class="error" ng-if='successmessage'>{{successmessage}}</p>
+  <h1>Welcome:please register or login</h1>
+  <fieldset>
+    <legend>Register</legend>
+    <form class="" ng-submit='register()'>
+      <label for="">Username:</label><input type="text"  ng-model='newuser.username'></br>
+      <div class="errdiv" ng-if="message">
+         <p class='error' ng-if='message.username'>{{message.username}}</p>
+      </div>
+      <label>Password:</label><input type="password" ng-model='newuser.password'></br>
+      <div class="errdiv" ng-if="message">
+         <p class='error' ng-if='message.password'>{{message.password}}</p>
+      </div>
+      <label>Confirm password:</label><input type="password" ng-model='newuser.passwordConfirmation'></br>
+      <input type="submit" name="" value="Register">
+    </form>
+  </fieldset>
+  <fieldset>
+    <legend>Login</legend>
+    <form class=""  ng-submit='login()'></br>
+      <label>Username:</label><input type="text" ng-model='loginuser.username'></br>
+      <div class="errdiv" ng-if="message">
+         <p class='error' ng-if='message.lusername'>{{message.lusername}}</p>
+      </div>
+      <label>Password:</label><input type="password" ng-model='loginuser.password'></br>
+      <div class="errdiv" ng-if="message">
+         <p class='error' ng-if='message.lpassword'>{{message.lpassword}}</p>
+      </div>
+      <input type="submit" name="" value="Login">
+    </form>
+  </fieldset>
+</div>
