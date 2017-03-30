@@ -28,18 +28,21 @@ server.listen( port, function() {
 currentusers=[]
 io.sockets.on('connection', function (socket) {
   socket.on("newuser", function (data){
+      console.log('*****************');
+      console.log(data);
       var temp=null
       for(i=0;i<currentusers.length;i++){
         if(data.userid==currentusers[i].userid){
           temp=1
         }
       }
-      if(! (data.userid in currentusers)){
+      if(! temp){
         currentusers.push({userid:data.userid,username:data.username,socketid:socket.id})
-      }
-      console.log(currentusers);
-      console.log('newuser login!  user: ' + data.username+ ':'+data.userid+':'+socket.id);
+        console.log('newuser login!  user: ' + data.username+ ':'+data.userid+':'+socket.id);
         io.emit('currentusers', {users:currentusers,iomessage:'User '+data.username+' online now!'});
+      }
+      io.emit('currentusers', {users:currentusers,iomessage:''});      
+      console.log(currentusers);
     })
   socket.on("logout",function(data){
       console.log(data);
