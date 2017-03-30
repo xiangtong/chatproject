@@ -8,6 +8,9 @@ $routeProvider
   .when('/profile/:userid',{
       templateUrl: '../partials/profile.html',
   })
+  // .when('/message/:userid',{
+  //     templateUrl: '../partials/message.html',
+  // })
   .otherwise({
     redirectTo: '/'
   });

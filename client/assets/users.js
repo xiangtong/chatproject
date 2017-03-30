@@ -50,6 +50,8 @@ app.factory('userFactory',['$http','$location', function($http,$location){
 app.controller('UsersController',['$scope','userFactory','$location','$cookies','$routeParams',function ($scope,userFactory,$location,$cookies,$routeParams) {
   // $scope.userlist=[]
   // console.log("enter controller");
+  $scope.showmessagepage=null
+  $scope.newtext={}
   if($cookies.get('successmessage')){
       $scope.successmessage=$cookies.get('successmessage')
       $cookies.remove('successmessage')
@@ -62,12 +64,14 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
   //     $cookies.remove('userlist')
   // }
   if($routeParams){
-    if($routeParams.userid){
+    if($routeParams.userid&&$location.path().indexOf('/profile')>-1){
       userFactory.checkstatus(function(data){
           $scope.user=data
           console.log(data);
           if(!$cookies.get(!'iffirst')){
+            $scope.allmessages=[]
             $scope.socket = io.connect();
+            console.log($scope.socket.id);
             $cookies.put('iffirst',1)
             $scope.socket.emit("newuser", {username: data.username,userid:data._id});
             $scope.socket.on('currentusers', function (sdata){
@@ -78,6 +82,20 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                   console.log($scope.userlist);
                 })
             });
+            $scope.socket.on('messageupdate', function (message){
+                console.log('The server says: ' + message);
+                console.log(message);
+                $scope.$apply(function(){
+                  $scope.allmessages.push(message)
+                  console.log($scope.allmessages);
+                  if($scope.to_user){
+                    if(message.from_userid==$scope.to_user.userid){
+                      $scope.messages.push(message)
+                      console.log($scope.messages);
+                    }
+                  }
+                })
+            });
           }
       })
     }
@@ -85,6 +103,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
 
   userFactory.checkstatus(function(data){
       $scope.user=data
+      console.log('************'+data);
       if($scope.user&&$location.path()=='/'){
         url='/profile/'+data.user._id
         $cookies.remove('iffirst')
@@ -125,17 +144,10 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
       if(data.info){
         $cookies.put('successmessage', data.info)
         console.log('*****************');
-        console.log({username: $scope.user.username,userid:$scope.user._id});
+        // console.log({username: $scope.user.username,userid:$scope.user._id});
         $scope.socket.emit("logout", {username: $scope.user.username,userid:$scope.user._id});
         $scope.socket.disconnect()
-        // $scope.socket.on('disconnect', function (sdata){
-        //     console.log('The server says: ' + sdata);
-        //     $scope.$apply(function(){
-        //       $scope.userlist={}
-        //       console.log($scope.userlist);
-        //     })
         $cookies.remove('iffirst')
-        // });
         $scope.user = {}
         url='/'
         $location.url(url)
@@ -146,4 +158,41 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
         }
       })
   };
+  $scope.messagepage=function(to_user){
+    $scope.showmessagepage=1
+    // console.log('******************');
+    $scope.to_user=to_user
+    // console.log($scope.to_user);
+    // console.log($scope.user);
+    // console.log($scope.allmessages);
+    $scope.messages=[]
+    for(i=0;i<$scope.allmessages.length;i++){
+      if($scope.allmessages[i].from_userid==$scope.user._id&&$scope.allmessages[i].to_userid==$scope.to_user.userid){
+        $scope.messages.push($scope.allmessages[i])
+      }
+      else if($scope.allmessages[i].from_userid==$scope.to_user.userid&&$scope.allmessages[i].to_userid==$scope.user._id){
+        $scope.messages.push($scope.allmessages[i])
+      }
+    }
+    console.log($scope.messages);
+  }
+  $scope.message=function(){
+    // console.log($scope.to_user);
+    // console.log($scope.newtext.text);
+    $scope.newmessage={}
+    $scope.newmessage.from_username=$scope.user.username
+    $scope.newmessage.to_username=$scope.to_user.username
+    $scope.newmessage.from_userid=$scope.user._id
+    $scope.newmessage.to_userid=$scope.to_user.userid
+    if($scope.to_user.socketid){
+      $scope.newmessage.to_socketid=$scope.to_user.socketid
+    }
+    $scope.newmessage.createdAt=Date.now()
+    $scope.newmessage.message=$scope.newtext.text
+    // console.log($scope.newmessage);
+    $scope.socket.emit('newmessage',$scope.newmessage)
+    $scope.allmessages.push($scope.newmessage)
+    $scope.messages.push($scope.newmessage)
+    $scope.newtext.text=''
+  }
 }])

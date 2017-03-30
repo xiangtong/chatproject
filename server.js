@@ -25,22 +25,43 @@ require('./server/config/routes.js')(app,io)
 server.listen( port, function() {
   console.log( `server running on port ${ port }` );
 });
-currentusers={}
+currentusers=[]
 io.sockets.on('connection', function (socket) {
   socket.on("newuser", function (data){
+      var temp=null
+      for(i=0;i<currentusers.length;i++){
+        if(data.userid==currentusers[i].userid){
+          temp=1
+        }
+      }
       if(! (data.userid in currentusers)){
-        currentusers[data.userid]=data.username
+        currentusers.push({userid:data.userid,username:data.username,socketid:socket.id})
       }
       console.log(currentusers);
-      console.log('newuser login!  user: ' + data.username +data.userid);
+      console.log('newuser login!  user: ' + data.username+ ':'+data.userid+':'+socket.id);
         io.emit('currentusers', {users:currentusers,iomessage:'User '+data.username+' online now!'});
     })
   socket.on("logout",function(data){
-      console.log("**************************");
-      delete currentusers[data.userid]
+      console.log(data);
+      for(i=0;i<currentusers.length;i++){
+        if(currentusers[i].userid==data.userid){
+          currentusers.splice(i,1)
+        }
+      }
       console.log(currentusers);
       socket.disconnect()
       io.emit('currentusers', {users:currentusers,iomessage:'User '+data.username+' offline now!'});
+    })
+  socket.on("newmessage",function(data){
+      console.log("**************************");
+      for(i=0;i<currentusers.length;i++){
+        // if(currentusers[i].socketid==data.to_socketid){
+        //   io.to(data.to_socketid).emit('messageupdate',data)
+        // } else
+        if(currentusers[i].userid==data.to_userid){
+          io.to(currentusers[i].socketid).emit('messageupdate',data)
+        }
+      }
     })
   console.log("WE ARE USING SOCKETS!");
   console.log(socket.id);

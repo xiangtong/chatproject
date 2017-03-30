@@ -117,3 +117,16 @@
   .sortorder.reverse:after {
   content: '\25bc';   // BLACK DOWN-POINTING TRIANGLE
   }
+  #userpart{
+    display: inline-block;
+    width: 200px;
+    border: 2px dashed gray;
+  }
+  #messagepart{
+    display: inline-block;
+    border: 1px dotted grey;
+    width: 60%;
+  }
+  .fromname{
+    display: inline;
+  }

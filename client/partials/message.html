@@ -1,0 +1,15 @@
+<div class="" ng-controller="UsersController">
+  <h1>From:&nbsp{{user.username}}</h1>
+  <h1>To::&nbsp{{.username}}</h1>
+  <a href ng-click=logout(user._id)>Logout</a></br>
+<!-- with all the data we can then construct a more structured output -->
+  <!-- <h3 for="">Password:&nbsp{{user.passwordHash}}</h3></br> -->
+  <!-- <h3 for="">Password:&nbsp{{password}}</h3></br> -->
+  <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br>
+  <hr>
+  <p class="error" ng-if='iomessage'>{{iomessage}}</p>
+  <!-- <p>{{userlist}}</p> -->
+  <p ng-repeat='(userid,username) in userlist'>{{userid}}&nbsp{{username}}</p>
+  <hr>
+
+</div>

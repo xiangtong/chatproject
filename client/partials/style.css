@@ -70,6 +70,16 @@
     position: relative;
     left: 50%;
   }
+  #userpart{
+    display: inline-block;
+    width: 200px;
+    border: 1px,solid,grey;
+  }
+  #messagepart{
+    display: inline-block;
+    border: 1px,datted,grey;
+    width: 60%;
+  }
   /*h1{
     color: grey;
     display: inline-block;

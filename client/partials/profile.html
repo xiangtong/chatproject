@@ -2,13 +2,26 @@
 <p class="error" ng-if='successmessage'>{{successmessage}}</p>
   <h1>Welcome:&nbsp{{user.username}}</h1>
   <a href ng-click=logout(user._id)>Logout</a></br>
-<!-- with all the data we can then construct a more structured output -->
-  <!-- <h3 for="">Password:&nbsp{{user.passwordHash}}</h3></br> -->
-  <!-- <h3 for="">Password:&nbsp{{password}}</h3></br> -->
   <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br>
   <hr>
-  <p class="error" ng-if='iomessage'>{{iomessage}}</p>
-  <p>{{userlist}}</p>
-  <!-- <p>{{test}}</p> -->
-  <p ng-repeat='id in userlist'>{{id}}&nbsp{{userlist[id]}}</p>
+  <div id="userpart">
+    <p class="error" ng-if='iomessage'>{{iomessage}}</p>
+    <!-- <p>{{userlist}}</p> -->
+    <p ng-repeat='user in userlist'><a href ng-click=messagepage(user)>{{user.username}}</a>&nbsp</p>
+  </div>
+  <div id="messagepart" ng-if='showmessagepage'>
+    <h3>From: {{user.username}}</h3>
+    <h3>To:  {{to_user.username}}</h3>
+    <div class="" ng-repeat='message in messages | orderBy:-message.createdAt '>
+      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
+      <p>{{message.message}}</p>
+    </div>
+    <form class="">
+      <textarea name="name" rows="3" cols="50" ng-model='newtext.text'></textarea>
+      <!-- {{newtext}} -->
+      <button type="button" name="button" ng-click='message()' ng-disabled='!(newtext.text)'>Send</button>
+    </form>
+  </div>
+  <hr>
+
 </div>
