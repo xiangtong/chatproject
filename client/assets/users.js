@@ -97,10 +97,31 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                       console.log($scope.messages);
                     } else {
                       $scope.newmessagenotify='You get new message from '+message.from_username
+                      for(i=0;i<$scope.userlist.length;i++){
+                        if($scope.userlist[i].userid==message.from_userid){
+                          if(!$scope.userlist[i].unreadmessage){
+                            $scope.userlist[i].unreadmessage=1
+                          } else {
+                            $scope.userlist[i].unreadmessage++
+                          }
+                        }
+                      }
                     }
                   } else {
                       $scope.newmessagenotify='You get new message from '+message.from_username
+                      for(i=0;i<$scope.userlist.length;i++){
+                        console.log('****');
+                        if($scope.userlist[i].userid==message.from_userid){
+                          console.log('%%%%');
+                          if(!$scope.userlist[i].unreadmessage){
+                            $scope.userlist[i].unreadmessage=1
+                          } else {
+                            $scope.userlist[i].unreadmessage++
+                          }
+                        }
+                      }
                   }
+                  console.log($scope.userlist);
                 })
             });
             $scope.socket.on('publicmessageupdate', function (message){
@@ -128,6 +149,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
 
   $scope.register=function(){
     userFactory.register($scope.newuser,function (data){
+      console.log(data);
       if(data.user){
         $scope.newuser={}
         $scope.user=data.user
@@ -177,6 +199,13 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.showmessagepage=1
     // console.log('******************');
     $scope.to_user=to_user
+    if(to_user.unreadmessage){
+      for(i=0;i<$scope.userlist.length;i++){
+        if($scope.userlist[i].userid==to_user.userid){
+            $scope.userlist[i].unreadmessage=null
+        }
+      }
+    }
     // console.log($scope.to_user);
     // console.log($scope.user);
     // console.log($scope.allmessages);
@@ -216,6 +245,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.messages.push($scope.newmessage)
     $scope.newtext.text=''
     $scope.treeage+=30
+    // $scope.myStyle={bottom: 0}
   }
   $scope.publicmessage=function(){
     // console.log($scope.to_user);

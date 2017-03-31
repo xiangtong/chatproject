@@ -10,7 +10,7 @@
   <div id="userpart">
     <p class="error" ng-if='iomessage'>{{iomessage}}</p>
     <h3>Online users</h3>
-    <p ng-repeat='u in userlist' ng-if='u.userid!=user._id'><a  href ng-click=messagepage(u)>{{u.username}}</a>&nbsp</p>
+    <p ng-repeat='u in userlist' ng-if='u.userid!=user._id'><a  href ng-click=messagepage(u)>{{u.username}}</a>&nbsp <span class="error">{{u.unreadmessage}}</span></p>
   </div>
   <div id="welcomepart" ng-if='!(showmessagepage)'>
     <h3>Spring is coming, please select another creature( online user) and talk with him/her to plant and grow your tree!</h3>
@@ -19,7 +19,7 @@
     <h3>From: {{user.username}}   To:  {{to_user.username}}</h3>
     <div class="messagelist">
       <div class="" ng-repeat='message in messages | orderBy:-message.createdAt '>
-        <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
+        <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:mm:hh yyyy-MM-dd'}}</span>
         <p>{{message.message}}</p>
       </div>
     </div>
@@ -33,7 +33,7 @@
     <h3>Public classroom</h3>
     <div class="messagelist">
     <div class="" ng-repeat='message in publicmessages | orderBy:-message.createdAt '>
-      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
+      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:mm:hh yyyy-MM-dd'}}</span>
       <p>{{message.message}}</p>
     </div>
   </div>
@@ -43,7 +43,7 @@
       <button type="button" name="button" ng-click='publicmessage()' ng-disabled='!(publictext.text)'>Send</button>
     </form>
   </div>
-  <div id="imgcontainer" ng-show='treeage'>
+  <div id="imgcontainer" ng-style="myStyle" ng-show='treeage'>
        <img src="../images/tree.png" height="{{ treeage }}" width="{{ treeage }}" />
        <!-- <img src="" alt=""> -->
   </div>

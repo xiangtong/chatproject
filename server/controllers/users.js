@@ -27,7 +27,7 @@ module.exports={
         }
         else{
           if(err.message.indexOf('duplicate key error')>-1){
-            info.email='the username has existed!'
+            info.username='the username has existed!'
             context.info=info
           }
         }
