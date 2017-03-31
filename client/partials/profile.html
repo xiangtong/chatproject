@@ -37,7 +37,8 @@
             <th> Private Options </th>
           </tr>
           <tr ng-repeat = "option in privateoptions">
-          <td> {{option}} </td>
+          <td> <a ng-click = "Cpaste2(option)" href = "">{{option}}</a> </td>
+
         </tr>
       </table>
       </div>
@@ -53,7 +54,7 @@
     </div>
   </div>
     <form class="">
-      <textarea name="name" rows="3"  ng-model='publictext.text'></textarea>
+      <textarea name="name" rows="3"  ng-model='publictext.text'>Hello</textarea>
       <button type="button" name="button" ng-click='publicmessage()' ng-disabled='!(publictext.text)'>Send</button>
 
       <!-- {{newtext}} -->
@@ -66,8 +67,9 @@
             <th> Fun Options </th>
           </tr>
           <tr ng-repeat = "option in options">
-          <td> {{option}} </td>
-          <td> {{funoptions[$index]}} </td>
+          <td> <a ng-click = "Cpaste(option)" href = "">{{option}}</a> </td>
+          <!-- <td> {{funoptions[$index]}} </td> -->
+          <td> <a ng-click = "Cpaste(funoptions[$index])" href = "">{{funoptions[$index]}}</a> </td>
         </tr>
       </table>
       </div>

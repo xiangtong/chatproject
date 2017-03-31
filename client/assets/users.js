@@ -48,7 +48,6 @@ app.factory('userFactory',['$http','$location', function($http,$location){
 }])
 
 app.controller('UsersController',['$scope','userFactory','$location','$cookies','$routeParams',function ($scope,userFactory,$location,$cookies,$routeParams) {
-  $scope.custom = false
   $scope.privateoptions = [':blush:',
 ':kissing_closed_eyes:',
 ':heart_eyes:',
@@ -78,6 +77,27 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
   ':ghost:',
   ':fist:',
   ':hourglass_flowing_sand:']
+  $scope.custom = false
+  $scope.Cpaste = function(option){
+    console.log(option)
+    if(!$scope.publictext){
+      $scope.publictext={}
+      $scope.publictext.text = option
+    } else {
+        $scope.publictext.text =   $scope.publictext.text + option
+    }
+
+  }
+  $scope.Cpaste2 = function(option){
+    console.log(option)
+    if(!$scope.newtext.text){
+
+      $scope.newtext.text = option
+    } else {
+        $scope.newtext.text =   $scope.newtext.text + option
+    }
+
+  }
     // console.log("enter controller");
     $scope.custom = true;
     $scope.toggleCustom = function() {
