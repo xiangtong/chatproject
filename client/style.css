@@ -143,8 +143,8 @@
     /*overflow-y: auto;*/
   }
   .messagelist{
-    /*height: 450px;*/
-    /*overflow-y: auto;*/
+    height: 350px;
+    overflow-y: auto;
   }
   #imgcontainer{
     display: inline;
@@ -162,10 +162,37 @@
     /*height: 600px;*/
     /*overflow-y: auto;*/
   }
-  textarea{
-    width: 80%;
+  .messageform{
+    position: relative;
+    /*text-align: left;*/
+    padding: 0;
+  }
+  #textarea1{
+    margin: 0;
+    position: relative;
+    left: 10%;
     background-color: rgba(255, 255, 255, 0.5);
+  }
+  #textarea2{
+    margin: 0;
+    position: relative;
+    left: 10%;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  #messagebutton1{
+    margin: 0;
+    position: relative;
+    left: 10%;
+  }
+  #messagebutton2{
+    margin: 0;
+    position: relative;
+    left: 10%;
   }
   .fromname{
     display: inline;
+  }
+  .profiletitle{
+    display: inline-block;
+    margin: 5px;
   }
