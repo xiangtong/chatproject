@@ -52,32 +52,31 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
   // console.log("enter controller");
   $scope.showmessagepage=null
   $scope.newtext={}
+  // $scope.defaultuser={username:'All',userid:'000000',socketid:'000000'}
   if($cookies.get('successmessage')){
       $scope.successmessage=$cookies.get('successmessage')
       $cookies.remove('successmessage')
   }
-  // $scope.test=[1,2,3]
-  // if($cookies.get('userlist')){
-  //     $scope.userlist=$cookies.get('userlist')
-  //     console.log('**************');
-  //     console.log($scope.userlist);
-  //     $cookies.remove('userlist')
-  // }
   if($routeParams){
     if($routeParams.userid&&$location.path().indexOf('/profile')>-1){
       userFactory.checkstatus(function(data){
           $scope.user=data
+          console.log('*********************');
           console.log(data);
           if(!$cookies.get(!'iffirst')){
             $scope.allmessages=[]
+            $scope.publicmessages=[]
             $scope.socket = io.connect();
             console.log($scope.socket.id);
+            console.log($scope.defaultuser);
             $cookies.put('iffirst',1)
             $scope.socket.emit("newuser", {username: data.username,userid:data._id});
             $scope.socket.on('currentusers', function (sdata){
                 console.log('The server says: ' + sdata);
+                console.log(sdata);
                 $scope.$apply(function(){
                   $scope.userlist=sdata.users
+                  // $scope.userlist.push($scope.defaultuser)
                   $scope.iomessage=sdata.iomessage
                   console.log($scope.userlist);
                 })
@@ -89,11 +88,26 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                   $scope.allmessages.push(message)
                   console.log($scope.allmessages);
                   if($scope.to_user){
-                    if(message.from_userid==$scope.to_user.userid){
+                    // if(message.to_userid=='000000'&&$scope.to_user.userid=='000000'){
+                    //   $scope.messages.push(message)
+                    // } else
+                     if(message.from_userid==$scope.to_user.userid){
                       $scope.messages.push(message)
                       console.log($scope.messages);
+                    } else {
+                      $scope.newmessagenotify='You get new message from '+message.from_username
                     }
+                  } else {
+                      $scope.newmessagenotify='You get new message from '+message.from_username
                   }
+                })
+            });
+            $scope.socket.on('publicmessageupdate', function (message){
+                console.log('The server says: ' + message);
+                console.log(message);
+                $scope.$apply(function(){
+                  $scope.publicmessages.push(message)
+                  console.log($scope.publicmessages);
                 })
             });
           }
@@ -166,16 +180,22 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     // console.log($scope.user);
     // console.log($scope.allmessages);
     $scope.messages=[]
-    for(i=0;i<$scope.allmessages.length;i++){
-      if($scope.allmessages[i].from_userid==$scope.user._id&&$scope.allmessages[i].to_userid==$scope.to_user.userid){
-        $scope.messages.push($scope.allmessages[i])
-      }
-      else if($scope.allmessages[i].from_userid==$scope.to_user.userid&&$scope.allmessages[i].to_userid==$scope.user._id){
-        $scope.messages.push($scope.allmessages[i])
+    if($scope.allmessages){
+      for(i=0;i<$scope.allmessages.length;i++){
+        if($scope.allmessages[i].from_userid==$scope.user._id&&$scope.allmessages[i].to_userid==$scope.to_user.userid){
+          $scope.messages.push($scope.allmessages[i])
+        }
+        else if($scope.allmessages[i].from_userid==$scope.to_user.userid&&$scope.allmessages[i].to_userid==$scope.user._id){
+          $scope.messages.push($scope.allmessages[i])
+        }
+        // if($scope.allmessages[i].to_userid=='000000'&&$scope.to_user.userid=='000000'){
+        //   $scope.messages.push($scope.allmessages[i])
+        // }
       }
     }
     console.log($scope.messages);
   }
+  // $scope.messagepage($scope.defaultuser)
   $scope.message=function(){
     // console.log($scope.to_user);
     // console.log($scope.newtext.text);
@@ -194,5 +214,18 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.allmessages.push($scope.newmessage)
     $scope.messages.push($scope.newmessage)
     $scope.newtext.text=''
+  }
+  $scope.publicmessage=function(){
+    // console.log($scope.to_user);
+    // console.log($scope.newtext.text);
+    pubmessage={}
+    pubmessage.from_username=$scope.user.username
+    pubmessage.from_userid=$scope.user._id
+    pubmessage.createdAt=Date.now()
+    pubmessage.message=$scope.publictext.text
+    // console.log($scope.pubmessage);
+    $scope.socket.emit('publicmessage',pubmessage)
+    $scope.publicmessages.push(pubmessage)
+    $scope.publictext.text=''
   }
 }])

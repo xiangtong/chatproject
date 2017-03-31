@@ -4,10 +4,14 @@
   <a href ng-click=logout(user._id)>Logout</a></br>
   <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br>
   <hr>
+  <p class="error" ng-if='newmessagenotify'>{{newmessagenotify}}</p>
   <div id="userpart">
     <p class="error" ng-if='iomessage'>{{iomessage}}</p>
-    <!-- <p>{{userlist}}</p> -->
-    <p ng-repeat='user in userlist'><a href ng-click=messagepage(user)>{{user.username}}</a>&nbsp</p>
+    <h3>Online users</h3>
+    <p ng-repeat='u in userlist' ng-if='u.userid!=user._id'><a  href ng-click=messagepage(u)>{{u.username}}</a>&nbsp</p>
+  </div>
+  <div id="welcomepart" ng-if='!(showmessagepage)'>
+    <h3>Spring is coming, please select another creature( online user) and talk with him/her to accelerate your grow speed!</h3>
   </div>
   <div id="messagepart" ng-if='showmessagepage'>
     <h3>From: {{user.username}}</h3>
@@ -17,11 +21,22 @@
       <p>{{message.message}}</p>
     </div>
     <form class="">
-      <textarea name="name" rows="3" cols="50" ng-model='newtext.text'></textarea>
+      <textarea name="name" rows="3"  ng-model='newtext.text'></textarea>
       <!-- {{newtext}} -->
       <button type="button" name="button" ng-click='message()' ng-disabled='!(newtext.text)'>Send</button>
     </form>
   </div>
+  <div id="publicpart">
+    <h3>Public classroom</h3>
+    <div class="" ng-repeat='message in publicmessages | orderBy:-message.createdAt '>
+      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
+      <p>{{message.message}}</p>
+    </div>
+    <form class="">
+      <textarea name="name" rows="3"  ng-model='publictext.text'></textarea>
+      <!-- {{newtext}} -->
+      <button type="button" name="button" ng-click='publicmessage()' ng-disabled='!(publictext.text)'>Send</button>
+    </form>
+  </div>
   <hr>
-
 </div>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div class="">
+      <script type="text/javascript">
+
+            window.addEventListener("DOMContentLoaded", function () {
+
+                // 获取基本的元素,设置.
+                var canvas = document.getElementById("canvas");
+                var context = canvas.getContext("2d");
+                // hide the canvas
+                //context.style.display = "none";
+                var image = new Image();
+                var video = document.getElementById("video");
+                var videoObj = { "video": true };
+                var errBack = function (error) {
+                    console.log("Video capture error: ", error.code);
+                };
+
+                // Prefer camera resolution nearest to 1280x720.
+                var constraints = { audio: false, video: { width: 1280, height: 720 } };
+
+                navigator.mediaDevices.getUserMedia(constraints)
+                .then(function (mediaStream) {
+                    var video = document.querySelector('video');
+                    video.srcObject = mediaStream;
+                    video.onloadedmetadata = function (e) {
+                        video.play();
+                    };
+                })
+                .catch(function (err) { console.log(err.name + ": " + err.message); });
+            }, false);
+
+            function snap(type) {
+                if (video.readyState == 4) {
+                    var canvas = document.getElementById("canvas");
+                    var context = canvas.getContext("2d");
+                    context.drawImage(video, 0, 0, 320, 240);
+                    var image = new Image();
+                    image.src = canvas.toDataURL("image/png",0.1);
+                    var base64 = image.src;
+                    document.getElementById("canvas").style.visibility = "visible"
+                    document.getElementById("canvas").src = imageurl
+                }
+            }
+        </script>
+        <video id="video" width="320" height="240" autoplay="autoplay"></video>
+        <canvas id="canvas" width="320" height="240" style="visibility:hidden" ></canvas>
+        <button  onclick="snap();return false">Snapshot</button>
+    </div>
+  </body>
+</html>

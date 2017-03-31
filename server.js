@@ -41,7 +41,7 @@ io.sockets.on('connection', function (socket) {
         console.log('newuser login!  user: ' + data.username+ ':'+data.userid+':'+socket.id);
         io.emit('currentusers', {users:currentusers,iomessage:'User '+data.username+' online now!'});
       }
-      io.emit('currentusers', {users:currentusers,iomessage:''});      
+      io.emit('currentusers', {users:currentusers,iomessage:''});
       console.log(currentusers);
     })
   socket.on("logout",function(data){
@@ -57,14 +57,18 @@ io.sockets.on('connection', function (socket) {
     })
   socket.on("newmessage",function(data){
       console.log("**************************");
-      for(i=0;i<currentusers.length;i++){
-        // if(currentusers[i].socketid==data.to_socketid){
-        //   io.to(data.to_socketid).emit('messageupdate',data)
-        // } else
-        if(currentusers[i].userid==data.to_userid){
-          io.to(currentusers[i].socketid).emit('messageupdate',data)
+        for(i=0;i<currentusers.length;i++){
+          // if(currentusers[i].socketid==data.to_socketid){
+          //   io.to(data.to_socketid).emit('messageupdate',data)
+          // } else
+          if(currentusers[i].userid==data.to_userid){
+            io.to(currentusers[i].socketid).emit('messageupdate',data)
+          }
         }
-      }
+    })
+  socket.on("publicmessage",function(data){
+      console.log("**************************");
+      socket.broadcast.emit('publicmessageupdate',data)
     })
   console.log("WE ARE USING SOCKETS!");
   console.log(socket.id);
