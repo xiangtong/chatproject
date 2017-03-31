@@ -20,27 +20,55 @@
     <div class="messagelist">
       <div class="" ng-repeat='message in messages | orderBy:-message.createdAt '>
         <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
-        <p>{{message.message}}</p>
+        <p ng-bind-html="message.message | emoticons:{linkTarget:'_blank'}"></p>
       </div>
     </div>
     <form class="">
       <textarea name="name" rows="3"  ng-model='newtext.text'></textarea>
-      <!-- {{newtext}} -->
       <button type="button" name="button" ng-click='message()' ng-disabled='!(newtext.text)'>Send</button>
+
+      <img ng-click="toggleCustom2()" src="./../assets/images/private.png" style="width:50px;height:50px;">
+<h6> "Toggle My Face for Commands" -says the private-like smiley face </h6>
+      <div ng-if = "!custom2">
+        <table>
+          <tr>
+            <th> Private Options </th>
+          </tr>
+          <tr ng-repeat = "option in privateoptions">
+          <td> {{option}} </td>
+        </tr>
+      </table>
+      </div>
+      <!-- {{newtext}} -->
     </form>
   </div>
   <div id="publicpart">
     <h3>Public classroom</h3>
     <div class="messagelist">
     <div class="" ng-repeat='message in publicmessages | orderBy:-message.createdAt '>
-      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
-      <p>{{message.message}}</p>
+      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'mediumTime'}}</span>
+    <p ng-bind-html="message.message | emoticons:{linkTarget:'_blank'}"></p>
     </div>
   </div>
     <form class="">
       <textarea name="name" rows="3"  ng-model='publictext.text'></textarea>
-      <!-- {{newtext}} -->
       <button type="button" name="button" ng-click='publicmessage()' ng-disabled='!(publictext.text)'>Send</button>
+
+      <!-- {{newtext}} -->
+      <img ng-click="toggleCustom()" src="./../assets/images/winkyface.jpg" style="width:50px;height:50px;">
+<h6> "Toggle My Face for Commands" -says the spring-like smiley face </h6>
+      <div ng-if = "!custom">
+        <table>
+          <tr>
+            <th> Spring Options </th>
+            <th> Fun Options </th>
+          </tr>
+          <tr ng-repeat = "option in options">
+          <td> {{option}} </td>
+          <td> {{funoptions[$index]}} </td>
+        </tr>
+      </table>
+      </div>
     </form>
   </div>
   <div id="imgcontainer" ng-show='treeage'>

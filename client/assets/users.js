@@ -48,8 +48,45 @@ app.factory('userFactory',['$http','$location', function($http,$location){
 }])
 
 app.controller('UsersController',['$scope','userFactory','$location','$cookies','$routeParams',function ($scope,userFactory,$location,$cookies,$routeParams) {
-  // $scope.userlist=[]
-  // console.log("enter controller");
+  $scope.custom = false
+  $scope.privateoptions = [':blush:',
+':kissing_closed_eyes:',
+':heart_eyes:',
+':smiley:',
+':smirk:',
+':relaxed:',
+':facepunch:',
+':laughing:']
+    $scope.options = [':bouquet:',
+  ':cherry_blossom:',
+  ':tulip:',
+  ':taurus:',
+  ':apple:',
+  ':sunrise:',
+  ':money_with_wings:',
+  ':couplekiss:',
+  ':sunglasses:',
+  ':herb:',
+  ':sunflower:']
+  $scope.funoptions = [':japanese_goblin:',
+  ':shipit:',
+  ':hankey:',
+  ':sushi:',
+  ':pouting_cat:',
+  ':hurtrealbad:',
+  ':rage1:',
+  ':ghost:',
+  ':fist:',
+  ':hourglass_flowing_sand:']
+    // console.log("enter controller");
+    $scope.custom = true;
+    $scope.toggleCustom = function() {
+        $scope.custom = $scope.custom === false ? true: false;
+    };
+    $scope.custom2 = true;
+    $scope.toggleCustom2 = function() {
+        $scope.custom2 = $scope.custom2 === false ? true: false;
+    };
   $scope.showmessagepage=null
   $scope.newtext={}
   // $scope.defaultuser={username:'All',userid:'000000',socketid:'000000'}
