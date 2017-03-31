@@ -2,9 +2,9 @@
   <!-- <div class="" style="background-image: url(../images/tree.png); height:500px; width: 500px;"> -->
 
 <p class="error" ng-if='successmessage'>{{successmessage}}</p>
-  <h1>Welcome:&nbsp{{user.username}}</h1>
+  <h2 class='profiletitle'>Welcome:&nbsp{{user.username}}&nbsp&nbsp&nbsp</h2>
   <a href ng-click=logout(user._id)>Logout</a></br>
-  <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br>
+  <!-- <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br> -->
   <hr>
   <p class="error" ng-if='newmessagenotify'>{{newmessagenotify}}</p>
   <div id="userpart">
@@ -25,10 +25,11 @@
 
       </div>
     </div>
-    <form class="">
-      <textarea name="name" rows="3"  ng-model='newtext.text'></textarea>
-      <button type="button" name="button" ng-click='message()' ng-disabled='!(newtext.text)'>Send</button>
-
+    <form class="messageform" ng-submit="message()">
+      <!-- <textarea name="name" rows="3"  ng-model='newtext.text'></textarea> -->
+      <input type="text" id="textarea2" name="" value="" ng-model='newtext.text'>
+      <!-- <button type="button" name="button" ng-click='message()' ng-disabled='!(newtext.text)'>Send</button> -->
+      <input type="submit" id='messagebutton2' name="" ng-disabled='!(newtext.text)' value="Send"></br>
       <img ng-click="toggleCustom2()" src="./../assets/images/private.png" style="width:50px;height:50px;">
 <h6> "Toggle My Face for Commands" -says the private-like smiley face </h6>
       <div ng-if = "!custom2">
@@ -53,10 +54,18 @@
     <p ng-bind-html="message.message | emoticons:{linkTarget:'_blank'}"></p>
     </div>
   </div>
+<!-- <<<<<<< HEAD
     <form class="">
       <textarea name="name" rows="3"  ng-model='publictext.text'>Hello</textarea>
       <button type="button" name="button" ng-click='publicmessage()' ng-disabled='!(publictext.text)'>Send</button>
 
+======= -->
+    <form class="messageform" ng-submit="publicmessage()">
+      <!-- <textarea name="name" rows="3"  ng-model='publictext.text'></textarea> -->
+      <input type="text" id="textarea1" name="" value="" ng-model='publictext.text'>
+      <!-- <button type="button" name="button"  ng-disabled='!(publictext.text)'>Send</button> -->
+      <input type="submit" id='messagebutton1' name=""ng-disabled='!(publictext.text)' value="Send"></br>
+<!-- >>>>>>> 44fcbb0bbea2022f20e8341e9964e58e5bb91423 -->
       <!-- {{newtext}} -->
       <img ng-click="toggleCustom()" src="./../assets/images/winkyface.jpg" style="width:50px;height:50px;">
 <h6> "Toggle My Face for Commands" -says the spring-like smiley face </h6>
