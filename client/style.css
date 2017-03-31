@@ -151,7 +151,7 @@
     position: absolute;
     vertical-align: bottom;
     left:25%;
-    bottom: 100px;
+    bottom: 0;
     z-index: -1;
   }
   #publicpart{
