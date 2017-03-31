@@ -120,25 +120,51 @@
   #userpart{
     display: inline-block;
     width:20%;
-    border: 2px dashed gray;
+    border: 1px dotted gray;
+    position: relative;
+    vertical-align: top;
   }
   #messagepart{
     display: inline-block;
     border: 1px dotted grey;
     width: 40%;
+    position: relative;
+    /*height: 600px;*/
+    vertical-align: top;
+    /*overflow-y: auto;*/
   }
   #welcomepart{
     display: inline-block;
     border: 1px dotted grey;
     width: 40%;
+    position: relative;
+    /*height: 600px;*/
+    vertical-align: top;
+    /*overflow-y: auto;*/
+  }
+  .messagelist{
+    /*height: 450px;*/
+    /*overflow-y: auto;*/
+  }
+  #imgcontainer{
+    display: inline;
+    position: absolute;
+    vertical-align: bottom;
+    left:25%;
+    bottom: 100px;
+    z-index: -1;
   }
   #publicpart{
     display: inline-block;
     border: 1px dotted grey;
     width: 30%;
+    position: relative;
+    /*height: 600px;*/
+    /*overflow-y: auto;*/
   }
   textarea{
     width: 80%;
+    background-color: rgba(255, 255, 255, 0.5);
   }
   .fromname{
     display: inline;

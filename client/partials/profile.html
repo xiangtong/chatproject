@@ -1,4 +1,6 @@
-<div class="" ng-controller="UsersController">
+<div class="" ng-controller="UsersController" >
+  <!-- <div class="" style="background-image: url(../images/tree.png); height:500px; width: 500px;"> -->
+
 <p class="error" ng-if='successmessage'>{{successmessage}}</p>
   <h1>Welcome:&nbsp{{user.username}}</h1>
   <a href ng-click=logout(user._id)>Logout</a></br>
@@ -11,14 +13,15 @@
     <p ng-repeat='u in userlist' ng-if='u.userid!=user._id'><a  href ng-click=messagepage(u)>{{u.username}}</a>&nbsp</p>
   </div>
   <div id="welcomepart" ng-if='!(showmessagepage)'>
-    <h3>Spring is coming, please select another creature( online user) and talk with him/her to accelerate your grow speed!</h3>
+    <h3>Spring is coming, please select another creature( online user) and talk with him/her to plant and grow your tree!</h3>
   </div>
   <div id="messagepart" ng-if='showmessagepage'>
-    <h3>From: {{user.username}}</h3>
-    <h3>To:  {{to_user.username}}</h3>
-    <div class="" ng-repeat='message in messages | orderBy:-message.createdAt '>
-      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
-      <p>{{message.message}}</p>
+    <h3>From: {{user.username}}   To:  {{to_user.username}}</h3>
+    <div class="messagelist">
+      <div class="" ng-repeat='message in messages | orderBy:-message.createdAt '>
+        <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
+        <p>{{message.message}}</p>
+      </div>
     </div>
     <form class="">
       <textarea name="name" rows="3"  ng-model='newtext.text'></textarea>
@@ -28,15 +31,22 @@
   </div>
   <div id="publicpart">
     <h3>Public classroom</h3>
+    <div class="messagelist">
     <div class="" ng-repeat='message in publicmessages | orderBy:-message.createdAt '>
       <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
       <p>{{message.message}}</p>
     </div>
+  </div>
     <form class="">
       <textarea name="name" rows="3"  ng-model='publictext.text'></textarea>
       <!-- {{newtext}} -->
       <button type="button" name="button" ng-click='publicmessage()' ng-disabled='!(publictext.text)'>Send</button>
     </form>
   </div>
-  <hr>
+  <div id="imgcontainer" ng-show='treeage'>
+       <img src="../images/tree.png" height="{{ treeage }}" width="{{ treeage }}" />
+       <!-- <img src="" alt=""> -->
+  </div>
+ <!-- </div> -->
+ <!-- <img src="../images/tree.png" height="30" width="30" /> -->
 </div>

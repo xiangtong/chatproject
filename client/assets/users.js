@@ -66,6 +66,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
           if(!$cookies.get(!'iffirst')){
             $scope.allmessages=[]
             $scope.publicmessages=[]
+            $scope.treeage=0
             $scope.socket = io.connect();
             console.log($scope.socket.id);
             console.log($scope.defaultuser);
@@ -214,6 +215,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.allmessages.push($scope.newmessage)
     $scope.messages.push($scope.newmessage)
     $scope.newtext.text=''
+    $scope.treeage+=30
   }
   $scope.publicmessage=function(){
     // console.log($scope.to_user);
@@ -227,5 +229,6 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.socket.emit('publicmessage',pubmessage)
     $scope.publicmessages.push(pubmessage)
     $scope.publictext.text=''
+    $scope.treeage+=30
   }
 }])
