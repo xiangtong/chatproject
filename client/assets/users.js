@@ -47,7 +47,7 @@ app.factory('userFactory',['$http','$location', function($http,$location){
    return factory;
 }])
 
-app.controller('UsersController',['$scope','userFactory','$location','$cookies','$routeParams',function ($scope,userFactory,$location,$cookies,$routeParams) {
+app.controller('UsersController',['$scope','userFactory','$location','$cookies','$routeParams','$timeout',function ($scope,userFactory,$location,$cookies,$routeParams,$timeout) {
   $scope.privateoptions = [':blush:',
 ':kissing_closed_eyes:',
 ':heart_eyes:',
@@ -188,6 +188,14 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                   $scope.publicmessages.push(message)
                   console.log($scope.publicmessages);
                 })
+            });
+            $scope.socket.on('kickout', function (message){
+              // console.log('@@@@@@@@@@@@@2');
+              console.log('The server says: ' + message);
+              $scope.$apply(function(){
+                $scope.kickoutmessage=message
+                $timeout($scope.logout,5000)
+              })
             });
           }
       })

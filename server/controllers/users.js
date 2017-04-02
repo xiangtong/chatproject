@@ -65,9 +65,23 @@ module.exports={
           if(!user){
             info.lusername='username does not exist!'
             context.info=info
-          } else if(bcrypt.compareSync(password, user.passwordHash)){
+          }
+          else if(bcrypt.compareSync(password, user.passwordHash)){
+            for(var i=0;i<sessionusers.length;i++){
+              if(String(sessionusers[i].userid)==String(user._id)){  // this user have logged in , you need kick it out
+                sessionusers.splice(i,1)   //delete old login session info
+                // console.log(currentusers);
+                for(i=0;i<currentusers.length;i++){
+                  if(currentusers[i].userid==user._id){
+                    io.to(currentusers[i].socketid).emit('kickout','This user is logging in somewhere else. This login will be kickout in 5 secondes')
+                  }
+                }
+              }
+            }
             info='successfully login!'
             req.session.user=user
+            sessionusers.push({userid:user._id,sessionid:req.session.id})
+            // console.log(sessionusers);
             req.session.save()
             context.info=info
             context.user=user
