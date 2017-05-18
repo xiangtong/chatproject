@@ -73,6 +73,7 @@ module.exports={
                 // console.log(currentusers);
                 for(i=0;i<currentusers.length;i++){
                   if(currentusers[i].userid==user._id){
+                    //if the user has logined somewhere else, then send a kickout message to that login. that login will logout 5 seconds after get the kickout message. in this way, for each user, only one login at the same time.
                     io.to(currentusers[i].socketid).emit('kickout','This user is logging in somewhere else. This login will be kickout in 5 secondes')
                   }
                 }
@@ -97,6 +98,7 @@ module.exports={
     }
 
   },
+  //check whether the user has logined (has session in server)
   checkstatus:function(req,res){
     if(req.session.user){
       res.json(req.session.user)
@@ -106,7 +108,16 @@ module.exports={
   },
   //logout request
   logout:function(req, res) {
+    sessionid=req.session.id
     req.session.destroy()
+    console.log(sessionusers.length);
+    //remove user from session users list
+    for(i=0;i<sessionusers.length;i++){
+      if(sessionusers[i].sessionid==sessionid){
+        sessionusers.splice(i,1)
+      }
+    }
+    console.log(sessionusers.length);
     res.json({info:'successfully logout'})
     // res.redirect('/')
   },

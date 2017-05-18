@@ -19,59 +19,14 @@ app.use(session({
   saveUninitialized: true,
   cookie:{secure:false}
 }))
+currentusers=[]   // all socket online users info, include userid, username and socketid. the server use this array to mapping userid and socketid.
+sessionusers=[]   // all logined users info, include userid, sessionid. the array is to make sure each user could not have more than one login. the array be used in login and logout.
 require('./server/config/mongoose.js')
-require('./server/config/routes.js')(app,io)
+require('./server/config/routes.js')(app,io)   //pass app and io object to user controller. in this way, login function could use io to send message.
 
 server.listen( port, function() {
   console.log( `server running on port ${ port }` );
 });
-currentusers=[]
-sessionusers=[]
-io.sockets.on('connection', function (socket) {
-  socket.on("newuser", function (data){
-      // console.log('*****************');
-      // console.log(data);
-      var temp=null
-      for(i=0;i<currentusers.length;i++){
-        if(data.userid==currentusers[i].userid){
-          temp=1
-        }
-      }
-      if(! temp){
-        currentusers.push({userid:data.userid,username:data.username,socketid:socket.id})
-        // console.log('newuser login!  user: ' + data.username+ ':'+data.userid+':'+socket.id);
-        io.emit('currentusers', {users:currentusers,iomessage:'User '+data.username+' online now!'});
-      }
-      io.emit('currentusers', {users:currentusers,iomessage:''});
-      // console.log(currentusers);
-    })
-  socket.on("logout",function(data){
-      console.log(data);
-      for(i=0;i<currentusers.length;i++){
-        if(currentusers[i].userid==data.userid){
-          currentusers.splice(i,1)
-        }
-      }
-      console.log(currentusers);
-      socket.disconnect()
-      io.emit('currentusers', {users:currentusers,iomessage:'User '+data.username+' offline now!'});
-    })
-  socket.on("newmessage",function(data){
-      // console.log("**************************");
-        for(i=0;i<currentusers.length;i++){
-          // if(currentusers[i].socketid==data.to_socketid){
-          //   io.to(data.to_socketid).emit('messageupdate',data)
-          // } else
-          if(currentusers[i].userid==data.to_userid){
-            io.to(currentusers[i].socketid).emit('messageupdate',data)
-          }
-        }
-    })
-  socket.on("publicmessage",function(data){
-      // console.log("**************************");
-      socket.broadcast.emit('publicmessageupdate',data)
-    })
-  console.log("WE ARE USING SOCKETS!");
-  console.log(socket.id);
-  //all the socket code goes in here!
-})
+
+// load all socket.io code
+require('./server/controllers/instantmessage.js')(app,io)

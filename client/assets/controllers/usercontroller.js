@@ -1,82 +1,8 @@
-app.factory('userFactory',['$http','$location', function($http,$location){
-   var factory = {};
-   factory.checkstatus=function(callback){
-     $http.get('/checkstatus').then(
-       function(res){
-         if(!res.data){
-           $location.url('/')
-         } else {
-          //  console.log(res.data);
-           callback(res.data)
-         }
-       }
-     )
-   }
-   factory.register = function(newuser,callback){
-     $http.post('/register',newuser).then(
-       function(res){
-         callback(res.data)
-       },
-       function(res){
-         callback(res.data)
-       }
-     )
-   }
-   factory.login = function(user,callback){
-     $http.post('/login',user).then(
-       function(res){
-         callback(res.data)
-       },
-       function(res){
-         callback(res.data)
-       }
-     )
-   }
-   factory.logout = function(callback){
-     $http.get('/logout').then(
-       function(res){
-        //  console.log(res);
-         callback(res.data)
-       },
-       function(res){
-        //  console.log(res);
-         callback(res.data)
-       }
-     )
-   }
-   return factory;
-}])
-
 app.controller('UsersController',['$scope','userFactory','$location','$cookies','$routeParams','$timeout',function ($scope,userFactory,$location,$cookies,$routeParams,$timeout) {
-  $scope.privateoptions = [':blush:',
-':kissing_closed_eyes:',
-':heart_eyes:',
-':smiley:',
-':smirk:',
-':relaxed:',
-':facepunch:',
-':laughing:']
-    $scope.options = [':bouquet:',
-  ':cherry_blossom:',
-  ':tulip:',
-  ':taurus:',
-  ':apple:',
-  ':sunrise:',
-  ':money_with_wings:',
-  ':couplekiss:',
-  ':sunglasses:',
-  ':herb:',
-  ':sunflower:']
-  $scope.funoptions = [':japanese_goblin:',
-  ':shipit:',
-  ':hankey:',
-  ':sushi:',
-  ':pouting_cat:',
-  ':hurtrealbad:',
-  ':rage1:',
-  ':ghost:',
-  ':fist:',
-  ':hourglass_flowing_sand:']
+  // get emojo prepared data
+  $scope.privateoptions = userFactory.getprivateoptions()
+  $scope.options = userFactory.getoptions()
+  $scope.funoptions = userFactory.getfunoptions()
   $scope.custom = false
   $scope.Cpaste = function(option){
     console.log(option)
@@ -107,6 +33,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.toggleCustom2 = function() {
         $scope.custom2 = $scope.custom2 === false ? true: false;
     };
+  //whether select a user to display the message between you and that user. if not, display other div
   $scope.showmessagepage=null
   $scope.newtext={}
   // $scope.defaultuser={username:'All',userid:'000000',socketid:'000000'}
@@ -114,12 +41,14 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
       $scope.successmessage=$cookies.get('successmessage')
       $cookies.remove('successmessage')
   }
+  // if request /profile page, userid is params. then begin socket.io connection.
   if($routeParams){
     if($routeParams.userid&&$location.path().indexOf('/profile')>-1){
       userFactory.checkstatus(function(data){
           $scope.user=data
           console.log('*********************');
           console.log(data);
+          //iffirst is to tell whether the user enter profile through login or refresh page. if via login, then do some init work and send newuser message to server.
           if(!$cookies.get(!'iffirst')){
             $scope.allmessages=[]
             $scope.publicmessages=[]
@@ -128,7 +57,9 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
             console.log($scope.socket.id);
             console.log($scope.defaultuser);
             $cookies.put('iffirst',1)
+            //send user info to server. then server will notify other user.
             $scope.socket.emit("newuser", {username: data.username,userid:data._id});
+            //when server get newuser login, server will send new useslist to all user. then all user could update their userlist.
             $scope.socket.on('currentusers', function (sdata){
                 console.log('The server says: ' + sdata);
                 console.log(sdata);
@@ -139,20 +70,23 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                   console.log($scope.userlist);
                 })
             });
+            //get new private message from server
             $scope.socket.on('messageupdate', function (message){
                 console.log('The server says: ' + message);
                 console.log(message);
                 $scope.$apply(function(){
                   $scope.allmessages.push(message)
                   console.log($scope.allmessages);
+                  //if you display the message page between someone and you
                   if($scope.to_user){
-                    // if(message.to_userid=='000000'&&$scope.to_user.userid=='000000'){
-                    //   $scope.messages.push(message)
-                    // } else
-                     if(message.from_userid==$scope.to_user.userid){
+                     //if the message is from that user, then juse display it
+                     if(message.from_userid==$scope.to_user.userid)
+                     {
                       $scope.messages.push(message)
                       console.log($scope.messages);
-                    } else {
+                      }
+                    else // if the message from other user, then display notify info and add unread message number of that user
+                    {
                       $scope.newmessagenotify='You get new message from '+message.from_username
                       for(i=0;i<$scope.userlist.length;i++){
                         if($scope.userlist[i].userid==message.from_userid){
@@ -164,7 +98,9 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                         }
                       }
                     }
-                  } else {
+                  }
+                  else //if you do not display message page with any one ,then when get new message, display notify info and unread message number of that user.
+                  {
                       $scope.newmessagenotify='You get new message from '+message.from_username
                       for(i=0;i<$scope.userlist.length;i++){
                         console.log('****');
@@ -181,6 +117,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                   console.log($scope.userlist);
                 })
             });
+            //get new public message from server
             $scope.socket.on('publicmessageupdate', function (message){
                 console.log('The server says: ' + message);
                 console.log(message);
@@ -189,19 +126,21 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                   console.log($scope.publicmessages);
                 })
             });
+            //if the same user login somewehre else, server will send kickout message, when current login get kickout message, it will logout 5 seconds later
             $scope.socket.on('kickout', function (message){
               // console.log('@@@@@@@@@@@@@2');
               console.log('The server says: ' + message);
               $scope.$apply(function(){
                 $scope.kickoutmessage=message
-                $timeout($scope.logout,5000)
+                //kickout logout send different message from normal logout. then server do different process
+                $timeout($scope.logout.bind(null,true),5000)
               })
             });
           }
       })
     }
   }
-
+  // if user has loggedin, but request / (login) page again, then he will be redirect to profile.
   userFactory.checkstatus(function(data){
       $scope.user=data
       console.log('************'+data);
@@ -241,13 +180,20 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
         }
     })
   };
-  $scope.logout=function(){
+  $scope.logout=function(ifkickout){
     userFactory.logout(function (data){
       if(data.info){
         $cookies.put('successmessage', data.info)
         console.log('*****************');
         // console.log({username: $scope.user.username,userid:$scope.user._id});
-        $scope.socket.emit("logout", {username: $scope.user.username,userid:$scope.user._id});
+        //when kickout, add kickout attribute into to message
+        if(ifkickout==true){
+          $scope.socket.emit("logout", {username: $scope.user.username,userid:$scope.user._id,kickout:1});
+        }
+        //after logout successfully ( server has removed session), send logout message to server. then server will update online user list and notify all other users
+        else {
+          $scope.socket.emit("logout", {username: $scope.user.username,userid:$scope.user._id});
+        }
         $scope.socket.disconnect()
         $cookies.remove('iffirst')
         $scope.user = {}
@@ -260,10 +206,12 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
         }
       })
   };
+  //display message div with a certain user
   $scope.messagepage=function(to_user){
     $scope.showmessagepage=1
     // console.log('******************');
     $scope.to_user=to_user
+    //if current user have some unread message from that user, then change it to null (o)
     if(to_user.unreadmessage){
       for(i=0;i<$scope.userlist.length;i++){
         if($scope.userlist[i].userid==to_user.userid){
@@ -276,6 +224,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     // console.log($scope.allmessages);
     $scope.messages=[]
     if($scope.allmessages){
+      //select all message from that user to you or from you to that user from allmessages
       for(i=0;i<$scope.allmessages.length;i++){
         if($scope.allmessages[i].from_userid==$scope.user._id&&$scope.allmessages[i].to_userid==$scope.to_user.userid){
           $scope.messages.push($scope.allmessages[i])
@@ -290,7 +239,8 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     }
     console.log($scope.messages);
   }
-  // $scope.messagepage($scope.defaultuser)
+
+  // send message to a certain user
   $scope.message=function(){
     // console.log($scope.to_user);
     // console.log($scope.newtext.text);
@@ -312,6 +262,8 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.treeage+=30
     // $scope.myStyle={bottom: 0}
   }
+
+  //send a public message
   $scope.publicmessage=function(){
     // console.log($scope.to_user);
     // console.log($scope.newtext.text);

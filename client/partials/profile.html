@@ -4,7 +4,7 @@
 <p class="error" ng-if='successmessage'>{{successmessage}}</p>
 <h1  style="color:red" ng-if='kickoutmessage'>{{kickoutmessage}}></h1>
   <h2 class='profiletitle'>Welcome:&nbsp{{user.username}}&nbsp&nbsp&nbsp</h2>
-  <a href ng-click=logout(user._id)>Logout</a></br>
+  <a href ng-click=logout()>Logout</a></br>
   <!-- <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br> -->
   <hr>
   <p class="error" ng-if='newmessagenotify'>{{newmessagenotify}}</p>
