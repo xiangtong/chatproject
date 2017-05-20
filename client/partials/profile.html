@@ -1,94 +1,106 @@
 <div class="" ng-controller="UsersController" >
   <!-- <div class="" style="background-image: url(../images/tree.png); height:500px; width: 500px;"> -->
-
-<p class="error" ng-if='successmessage'>{{successmessage}}</p>
-<h1  style="color:red" ng-if='kickoutmessage'>{{kickoutmessage}}></h1>
-  <h2 class='profiletitle'>Welcome:&nbsp{{user.username}}&nbsp&nbsp&nbsp</h2>
-  <a href ng-click=logout()>Logout</a></br>
-  <!-- <h3 for="">Created_at:&nbsp{{user.createdAt | date:'yyyy-MM-dd'}}</h3></br> -->
-  <hr>
-  <p class="error" ng-if='newmessagenotify'>{{newmessagenotify}}</p>
-  <div id="userpart">
-    <p class="error" ng-if='iomessage'>{{iomessage}}</p>
-    <h3>Online users</h3>
-    <p ng-repeat='u in userlist' ng-if='u.userid!=user._id'><a  href ng-click=messagepage(u)>{{u.username}}</a>&nbsp <span class="error">{{u.unreadmessage}}</span></p>
+  <div class="container-fluid">
+    <!-- <p class="error" ng-if='successmessage'>{{successmessage}}</p> -->
+      <nav class="navbar navbar-default">
+        <div class="nav navbar-nav">
+          <img src="../images/chatlogo.png" width="120" height="70" class="d-inline-block align-top" alt="">
+          Link Everyone...
+        </div>
+        <div class="nav navbar-nav navbar-center">
+          <h2> Welcome:&nbsp{{user.username}}&nbsp&nbsp&nbsp</h2>
+        </div>
+        <div class="nav navbar-nav navbar-right">
+          <a href ng-click=logout() ><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+        </div>
+      </nav>
+      <h3  class="alert alert-danger"  ng-if='kickoutmessage'>{{kickoutmessage}}></h1>
+        <!-- style="color:red" -->
   </div>
-  <div id="welcomepart" ng-if='!(showmessagepage)'>
-    <h3>Spring is coming, please select another creature( online user) and talk with him/her to plant and grow your tree!</h3>
-  </div>
-  <div id="messagepart" ng-if='showmessagepage'>
-    <h3>From: {{user.username}}   To:  {{to_user.username}}</h3>
-    <div class="messagelist">
-      <div class="" ng-repeat='message in messages | orderBy:-message.createdAt '>
-
-        <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'ss:hh:mm yyyy-MM-dd'}}</span>
-        <p ng-bind-html="message.message | emoticons:{linkTarget:'_blank'}"></p>
-
+  <div class="container messagebody">
+    <div class="row">
+      <div class="col-sm-3 userlistcol">
+        <div id="userpart">
+          <p class="alert alert-info" ng-hide="hideualert" ng-if='iomessage'>{{iomessage}}</p>
+          <h3>Online users</h3>
+          <hr class="titleline">
+          <ul class="userlist">
+            <li ng-repeat='u in userlist' ng-if='u.userid!=user._id'><a  href ng-click=messagepage(u)>{{u.username}}</a>&nbsp <span class="badge badge-danger">{{u.unreadmessage}}</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-5 messagelistcol">
+        <div class="col-sm-1"></div>
+        <!-- <div class="col-sm-10"> -->
+          <p class="alert alert-info" ng-hide="hidemalert" ng-if='newmessagenotify'>{{newmessagenotify}}</p>
+          <div id="welcomepart" ng-if='!(showmessagepage)'>
+            <h3>Spring is coming, please talk with others to plant and grow your tree!</h3>
+          </div>
+          <div id="messagepart" ng-if='showmessagepage'>
+            <h3>Talk with:  {{to_user.username}}</h3>
+            <hr class="titleline">
+            <div class="scrollmessagelist" scroll-glue>
+                <div class="" ng-repeat='message in messages | orderBy:-message.createdAt '>
+                  <h4 class="messagetitle">{{message.from_username}}&nbsp&nbsp&nbsp <span class="messagetime">Send at:&nbsp {{message.createdAt | date:'hh:mm:ss yyyy-MM-dd'}}</span></h4>
+                  <p class="messagetext" ng-bind-html="message.message | emoticons:{linkTarget:'_blank'}"></p>
+                </div>
+            </div>
+            <form class="messageform" ng-submit="message()">
+                <input id="messageinput" type="text" id="textarea2" name="" value="" ng-model='newtext.text'>
+                <div class="input-group-addon">
+                    <img class="imgicon" data-toggle="tooltip" data-placement="top" class="green-tooltip" title=" &quot; Toggle My Face for Commands &quot; -says the private-like smiley face" ng-click="toggleCustom2()" src="./../images/private.png" style="width:30px;height:30px;">
+                </div>
+              <input type="submit" id='messagebutton2' name="" ng-disabled='!(newtext.text)' value="Send"></br>
+            </form>
+            <div class="emojitablediv" ng-if = "!custom2">
+              <table>
+                  <tr>
+                    <th> Private Options </th>
+                  </tr>
+                  <tr ng-repeat = "option in privateoptions">
+                  <td> <a ng-click = "Cpaste2(option)" href = "">{{option}}</a> </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        <!-- </div> -->
+        <div class="col-sm-1"></div>
+      </div>
+      <!-- <div class="col-sm-1"></div> -->
+      <div class="col-sm-4 pmessagelistcol">
+        <div id="publicpart">
+          <h3>Public classroom</h3>
+          <hr class="titleline">
+          <div class="scrollmessagelist" scroll-glue>
+            <div class="" ng-repeat='message in publicmessages | orderBy:-message.createdAt '>
+              <h4 class="messagetitle">{{message.from_username}}&nbsp&nbsp&nbsp <span class="messagetime">Send at:&nbsp{{message.createdAt | date:'mediumTime'}}</span></h4>
+              <p class="messagetext" ng-bind-html="message.message | emoticons:{linkTarget:'_blank'}"></p>
+            </div>
+          </div>
+          <form class="messageform" ng-submit="publicmessage()">
+            <input type="text" id="messageinput" name="" value="" ng-model='publictext.text'>
+            <div class="input-group-addon">
+                <img class="imgicon" data-toggle="tooltip" data-placement="top" class="green-tooltip" title=" &quot; Toggle My Face for Commands &quot; -says the spring-like smiley face" ng-click="toggleCustom()" src="./../images/winkyface.png" style="width:30px;height:30px;">
+            </div>
+            <input type="submit" id='messagebutton1' name="" ng-disabled='!(publictext.text)' value="Send"></br>
+          </form>
+        </div>
+        <div class="emojitablediv" ng-if = "!custom">
+          <table>
+            <tr>
+              <th> Spring Options </th>
+              <th> Fun Options </th>
+            </tr>
+            <tr ng-repeat = "option in options">
+              <td> <a ng-click = "Cpaste(option)" href = "">{{option}}</a> </td>
+              <td> <a ng-click = "Cpaste(funoptions[$index])" href = "">{{funoptions[$index]}}</a> </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-    <form class="messageform" ng-submit="message()">
-      <!-- <textarea name="name" rows="3"  ng-model='newtext.text'></textarea> -->
-      <input type="text" id="textarea2" name="" value="" ng-model='newtext.text'>
-      <!-- <button type="button" name="button" ng-click='message()' ng-disabled='!(newtext.text)'>Send</button> -->
-      <input type="submit" id='messagebutton2' name="" ng-disabled='!(newtext.text)' value="Send"></br>
-      <img ng-click="toggleCustom2()" src="./../assets/images/private.png" style="width:50px;height:50px;">
-<h6> "Toggle My Face for Commands" -says the private-like smiley face </h6>
-      <div ng-if = "!custom2">
-        <table>
-          <tr>
-            <th> Private Options </th>
-          </tr>
-          <tr ng-repeat = "option in privateoptions">
-          <td> <a ng-click = "Cpaste2(option)" href = "">{{option}}</a> </td>
-
-        </tr>
-      </table>
-      </div>
-      <!-- {{newtext}} -->
-    </form>
-  </div>
-  <div id="publicpart">
-    <h3>Public classroom</h3>
-    <div class="messagelist">
-    <div class="" ng-repeat='message in publicmessages | orderBy:-message.createdAt '>
-      <h4 class="fromname">{{message.from_username}}</h4>&nbsp&nbsp&nbsp <span>{{message.createdAt | date:'mediumTime'}}</span>
-    <p ng-bind-html="message.message | emoticons:{linkTarget:'_blank'}"></p>
+    <div id="imgcontainer" ng-style="myStyle" ng-show='treeage'>
+       <img id="treeimg" src="../images/tree.png" height="{{ treeage }}" width="{{ treeage }}" />
     </div>
   </div>
-<!-- <<<<<<< HEAD
-    <form class="">
-      <textarea name="name" rows="3"  ng-model='publictext.text'>Hello</textarea>
-      <button type="button" name="button" ng-click='publicmessage()' ng-disabled='!(publictext.text)'>Send</button>
-
-======= -->
-    <form class="messageform" ng-submit="publicmessage()">
-      <!-- <textarea name="name" rows="3"  ng-model='publictext.text'></textarea> -->
-      <input type="text" id="textarea1" name="" value="" ng-model='publictext.text'>
-      <!-- <button type="button" name="button"  ng-disabled='!(publictext.text)'>Send</button> -->
-      <input type="submit" id='messagebutton1' name=""ng-disabled='!(publictext.text)' value="Send"></br>
-<!-- >>>>>>> 44fcbb0bbea2022f20e8341e9964e58e5bb91423 -->
-      <!-- {{newtext}} -->
-      <img ng-click="toggleCustom()" src="./../assets/images/winkyface.jpg" style="width:50px;height:50px;">
-<h6> "Toggle My Face for Commands" -says the spring-like smiley face </h6>
-      <div ng-if = "!custom">
-        <table>
-          <tr>
-            <th> Spring Options </th>
-            <th> Fun Options </th>
-          </tr>
-          <tr ng-repeat = "option in options">
-          <td> <a ng-click = "Cpaste(option)" href = "">{{option}}</a> </td>
-          <!-- <td> {{funoptions[$index]}} </td> -->
-          <td> <a ng-click = "Cpaste(funoptions[$index])" href = "">{{funoptions[$index]}}</a> </td>
-        </tr>
-      </table>
-      </div>
-    </form>
-  </div>
-  <div id="imgcontainer" ng-style="myStyle" ng-show='treeage'>
-       <img src="../images/tree.png" height="{{ treeage }}" width="{{ treeage }}" />
-       <!-- <img src="" alt=""> -->
-  </div>
- <!-- </div> -->
- <!-- <img src="../images/tree.png" height="30" width="30" /> -->
 </div>

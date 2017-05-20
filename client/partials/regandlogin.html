@@ -1,33 +1,71 @@
 <div class="" ng-controller="UsersController">
-  <p class="error" ng-if='successmessage'>{{successmessage}}</p>
-  <h1>Welcome:please register or login</h1>
-  <fieldset>
-    <legend>Register</legend>
-    <form class="" ng-submit='register()'>
-      <label for="">Username:</label><input type="text"  ng-model='newuser.username'></br>
-      <div class="errdiv" ng-if="message">
-         <p class='error' ng-if='message.username'>{{message.username}}</p>
+  <p class="logoutmessage" ng-if='successmessage'>{{successmessage}}</p>
+  <!-- <p class="logoutmessage" >Logout sssss</p> -->
+  <div class="container reglogin">
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1 text">
+        <h1>Welcome to chat room</h1>
+        <div class="description">
+          <p>
+            This is a free chat room application base on <strong>Angular, Socket.IO, Node.JS and Express.JS</strong>. With it, you could see all updated user list, send private message to another user or send public message to all others. If you like it, you could download the source code from my github rep <a href="https://github.com/xiangtong/chatproject" target="_blank"><strong>GitHub</strong></a>,
+             to customize and use it as you like!
+          </p>
+        </div>
       </div>
-      <label>Password:</label><input type="password" ng-model='newuser.password'></br>
-      <div class="errdiv" ng-if="message">
-         <p class='error' ng-if='message.password'>{{message.password}}</p>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="form-box">
+          <h3>Login to chat room</h3>
+          <p>Enter username and password to log on:</p>
+          <form class=""  ng-submit='login()'></br>
+          	<div class="form-group">
+              <label class="sr-only" >Username:</label>
+              <input type="text" placeholder="Username..." ng-model='loginuser.username'></br>
+              <div  ng-if="message">
+                 <p  class="errormessage" ng-if='message.lusername'>{{message.lusername}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="sr-only" >Password:</label>
+              <input type="password" placeholder="Password..." ng-model='loginuser.password'></br>
+              <div ng-if="message">
+                 <p class="errormessage" ng-if='message.lpassword'>{{message.lpassword}}</p>
+              </div>
+            </div>
+            <input type="submit" class="btn" name="" value="Login">
+          </form>
+        </div>
       </div>
-      <label>Confirm password:</label><input type="password" ng-model='newuser.passwordConfirmation'></br>
-      <input type="submit" name="" value="Register">
-    </form>
-  </fieldset>
-  <fieldset>
-    <legend>Login</legend>
-    <form class=""  ng-submit='login()'></br>
-      <label>Username:</label><input type="text" ng-model='loginuser.username'></br>
-      <div class="errdiv" ng-if="message">
-         <p class='error' ng-if='message.lusername'>{{message.lusername}}</p>
+      <div class="col-sm-1 middle-border"></div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-5">
+        <div class="form-box">
+          <h3>Sign up now</h3>
+          <p>Fill in the form below to get instant access:</p>
+          <form class="" ng-submit='register()'>
+            <div class="form-group">
+              <label class="sr-only" for="">Username:</label>
+              <input type="text" placeholder="Username..." ng-model='newuser.username'></br>
+              <div  ng-if="message">
+                 <p class="errormessage" ng-if='message.username'>{{message.username}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="sr-only" >Password:</label>
+              <input type="password" placeholder="Password..." ng-model='newuser.password'></br>
+              <div  ng-if="message">
+                 <p  class="errormessage" ng-if='message.password'>{{message.password}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="sr-only" >Confirm password:</label>
+              <input type="password" placeholder="Confirm Password..." ng-model='newuser.passwordConfirmation'></br>
+            </div>
+            <input type="submit" class="btn" name="" value="Sign Up">
+          </form>
+        </div>
       </div>
-      <label>Password:</label><input type="password" ng-model='loginuser.password'></br>
-      <div class="errdiv" ng-if="message">
-         <p class='error' ng-if='message.lpassword'>{{message.lpassword}}</p>
-      </div>
-      <input type="submit" name="" value="Login">
-    </form>
-  </fieldset>
+    </div>
+  </div>
 </div>

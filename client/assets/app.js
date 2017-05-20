@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ngRoute','ngCookies', 'ngEmoticons']);
+var app = angular.module('myApp', ['ngRoute','ngCookies', 'ngEmoticons','luegg.directives']);
 app.config(function ($routeProvider) {
 // Routes to load your new and edit pages with new and edit controllers attached to them!
 $routeProvider

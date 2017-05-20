@@ -74,7 +74,7 @@ module.exports={
                 for(i=0;i<currentusers.length;i++){
                   if(currentusers[i].userid==user._id){
                     //if the user has logined somewhere else, then send a kickout message to that login. that login will logout 5 seconds after get the kickout message. in this way, for each user, only one login at the same time.
-                    io.to(currentusers[i].socketid).emit('kickout','This user is logging in somewhere else. This login will be kickout in 5 secondes')
+                    io.to(currentusers[i].socketid).emit('kickout','This user has logged in somewhere else. This login will be kicked out in 5 seconds')
                   }
                 }
               }

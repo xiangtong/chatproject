@@ -66,7 +66,9 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                 $scope.$apply(function(){
                   $scope.userlist=sdata.users
                   // $scope.userlist.push($scope.defaultuser)
-                  $scope.iomessage=sdata.iomessage
+                  $scope.hideualert=false;
+                  $scope.iomessage=sdata.iomessage;
+                  $scope.autohideualert();
                   console.log($scope.userlist);
                 })
             });
@@ -87,7 +89,9 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                       }
                     else // if the message from other user, then display notify info and add unread message number of that user
                     {
+                      $scope.hidemalert=false;
                       $scope.newmessagenotify='You get new message from '+message.from_username
+                      $scope.autohidemalert();
                       for(i=0;i<$scope.userlist.length;i++){
                         if($scope.userlist[i].userid==message.from_userid){
                           if(!$scope.userlist[i].unreadmessage){
@@ -101,7 +105,9 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                   }
                   else //if you do not display message page with any one ,then when get new message, display notify info and unread message number of that user.
                   {
+                      $scope.hidemalert=false;
                       $scope.newmessagenotify='You get new message from '+message.from_username
+                      $scope.autohidemalert();
                       for(i=0;i<$scope.userlist.length;i++){
                         console.log('****');
                         if($scope.userlist[i].userid==message.from_userid){
@@ -139,6 +145,13 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
           }
       })
     }
+  }
+  //hide alert message (new message notify and new user online/offline) after 5 seconds
+  $scope.autohidemalert =function (){
+    $timeout(function () { $scope.hidemalert = true; }, 5000);
+  }
+  $scope.autohideualert =function (){
+    $timeout(function () { $scope.hideualert = true; }, 5000);
   }
   // if user has loggedin, but request / (login) page again, then he will be redirect to profile.
   userFactory.checkstatus(function(data){
