@@ -58,7 +58,7 @@
                     <th> Private Options </th>
                   </tr>
                   <tr ng-repeat = "option in privateoptions">
-                  <td> <a ng-click = "Cpaste2(option)" href = "">{{option}}</a> </td>
+                  <td> <a ng-click = "Cpaste2(option)" href = ""><span ng-bind-html="option | emoticons:{linkTarget:'_blank'}"> </span> &nbsp {{option}}</a> </td>
                 </tr>
               </table>
             </div>
@@ -92,8 +92,8 @@
               <th> Fun Options </th>
             </tr>
             <tr ng-repeat = "option in options">
-              <td> <a ng-click = "Cpaste(option)" href = "">{{option}}</a> </td>
-              <td> <a ng-click = "Cpaste(funoptions[$index])" href = "">{{funoptions[$index]}}</a> </td>
+              <td> <a ng-click = "Cpaste(option)" href = ""><span ng-bind-html="option | emoticons:{linkTarget:'_blank'}"> </span> &nbsp {{option}}</a> </td>
+              <td> <a ng-click = "Cpaste(funoptions[$index])" href = ""><span ng-bind-html="funoptions[$index] | emoticons:{linkTarget:'_blank'}"> </span> &nbsp {{funoptions[$index]}}</a> </td>
             </tr>
           </table>
         </div>

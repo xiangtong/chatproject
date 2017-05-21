@@ -80,6 +80,7 @@ input[type="submit"]{
 
 .emojitablediv{
 	display: inline-block;
+	font-size: 12px;
 	position: absolute;
 	bottom: 55px;
 	right: 10%;
