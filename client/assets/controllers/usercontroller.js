@@ -33,6 +33,13 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.toggleCustom2 = function() {
         $scope.custom2 = $scope.custom2 === false ? true: false;
     };
+    // hide emoji table div when user click outside area of the div
+    $scope.hideEmojiTable = function(){
+      $scope.custom=true;
+    }
+    $scope.hideEmojiTable2 = function(){
+      $scope.custom2=true;
+    }
   //whether select a user to display the message between you and that user. if not, display other div
   $scope.showmessagepage=null
   $scope.newtext={}

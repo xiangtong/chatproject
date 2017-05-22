@@ -48,7 +48,7 @@
             <form class="messageform" ng-submit="message()">
                 <input id="messageinput" type="text" id="textarea2" name="" value="" ng-model='newtext.text'>
                 <div class="input-group-addon">
-                    <img class="imgicon" data-toggle="tooltip" data-placement="top" class="green-tooltip" title=" &quot; Toggle My Face for Commands &quot; -says the private-like smiley face" ng-click="toggleCustom2()" src="./../images/private.png" style="width:30px;height:30px;">
+                    <img class="imgicon" data-toggle="tooltip" data-placement="top" class="green-tooltip" title=" &quot; Toggle My Face for Commands &quot; -says the private-like smiley face" ng-click="toggleCustom2()" hide-Emojitable="hideEmojiTable2()" src="./../images/private.png" style="width:30px;height:30px;">
                 </div>
               <input type="submit" id='messagebutton2' name="" ng-disabled='!(newtext.text)' value="Send"></br>
             </form>
@@ -80,7 +80,7 @@
           <form class="messageform" ng-submit="publicmessage()">
             <input type="text" id="messageinput" name="" value="" ng-model='publictext.text'>
             <div class="input-group-addon">
-                <img class="imgicon" data-toggle="tooltip" data-placement="top" class="green-tooltip" title=" &quot; Toggle My Face for Commands &quot; -says the spring-like smiley face" ng-click="toggleCustom()" src="./../images/winkyface.png" style="width:30px;height:30px;">
+                <img class="imgicon" data-toggle="tooltip" data-placement="top" class="green-tooltip" title=" &quot; Toggle My Face for Commands &quot; -says the spring-like smiley face" ng-click="toggleCustom()" hide-Emojitable="hideEmojiTable()" src="./../images/winkyface.png" style="width:30px;height:30px;">
             </div>
             <input type="submit" id='messagebutton1' name="" ng-disabled='!(publictext.text)' value="Send"></br>
           </form>
