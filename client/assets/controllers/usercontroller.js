@@ -103,8 +103,21 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                         if($scope.userlist[i].userid==message.from_userid){
                           if(!$scope.userlist[i].unreadmessage){
                             $scope.userlist[i].unreadmessage=1
-                          } else {
+                          }
+                          else {
                             $scope.userlist[i].unreadmessage++
+                          }   //below code to get the totol unread message number to display in the html header (tab header)
+                          temp=userFactory.getunreadmessagenumber()
+                          if(!temp){
+                            userFactory.setunreadmessagenumber(1)
+                          }
+                          else {
+                            temp++
+                            console.log("----temp:"+temp);
+                            userFactory.setunreadmessagenumber(temp)
+                          }  //if unread message number >0, change fav icon to the one with red dot
+                          if(userFactory.getunreadmessagenumber()){
+                            userFactory.setfaviconurl("images/icon1.png")
                           }
                         }
                       }
@@ -123,6 +136,18 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
                             $scope.userlist[i].unreadmessage=1
                           } else {
                             $scope.userlist[i].unreadmessage++
+                          }  //below code to get the totol unread message number to display in the html header (tab header)
+                          temp=userFactory.getunreadmessagenumber()
+                          if(!temp){
+                            userFactory.setunreadmessagenumber(1)
+                          }
+                          else {
+                            temp++
+                            console.log("----temp:"+temp);
+                            userFactory.setunreadmessagenumber(temp)
+                          }  //if unread message number >0, change fav icon to the one with red dot
+                          if(userFactory.getunreadmessagenumber()){
+                            userFactory.setfaviconurl("images/icon1.png")
                           }
                         }
                       }
@@ -233,6 +258,13 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     $scope.to_user=to_user
     //if current user have some unread message from that user, then change it to null (o)
     if(to_user.unreadmessage){
+      // decrease total under message number with this user's unread message number. if new total unread is 0, then change fav icon.
+      temp=userFactory.getunreadmessagenumber()-to_user.unreadmessage
+      if(temp==0){
+        temp=null
+        userFactory.setfaviconurl("images/icon.png")
+      }
+      userFactory.setunreadmessagenumber(temp)
       for(i=0;i<$scope.userlist.length;i++){
         if($scope.userlist[i].userid==to_user.userid){
             $scope.userlist[i].unreadmessage=null
@@ -242,6 +274,7 @@ app.controller('UsersController',['$scope','userFactory','$location','$cookies',
     // console.log($scope.to_user);
     // console.log($scope.user);
     // console.log($scope.allmessages);
+    //get all messages of this user.
     $scope.messages=[]
     if($scope.allmessages){
       //select all message from that user to you or from you to that user from allmessages

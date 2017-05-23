@@ -59,5 +59,24 @@ app.factory('userFactory',['$http','$location', function($http,$location){
   factory.getfunoptions=function(){
     return funoptions
   }
+
+  var faviconurl="images/icon.png"
+  var unreadmessagenumber=null
+
+  factory.getfaviconurl=function(){
+    return faviconurl
+  }
+  factory.getunreadmessagenumber=function(){
+    return unreadmessagenumber
+  }
+  factory.setfaviconurl=function(newurl){
+    faviconurl=newurl
+    console.log("faviconurl="+faviconurl);
+  }
+  factory.setunreadmessagenumber=function(newnumber){
+    unreadmessagenumber=newnumber
+    console.log("unreadmessagenumber:"+unreadmessagenumber);
+  }
+
    return factory;
 }])

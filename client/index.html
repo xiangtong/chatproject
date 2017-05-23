@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app='myApp' ng-controller="MainController">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,6 +14,7 @@
   <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
   <script src="assets/app.js" charset="utf-8"></script>
   <script src="assets/factories/userfactory.js" charset="utf-8"></script>
+  <script src="assets/controllers/maincontroller.js" charset="utf-8"></script>
   <script src="assets/controllers/usercontroller.js" charset="utf-8"></script>
   <link rel="stylesheet" href="bower_components/ng-emoticons/src/ng-emoticons.css"/>
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -21,6 +22,8 @@
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="form-elements.css">
+  <link rel="shortcut icon" href={{page.getfaviconurl()}} >
+  <title> {{page.getunreadmessagenumber()}} &nbsp Live Chat</title>
   <!-- <link rel="stylesheet" href="style-original.css"> -->
 </head>
   <body>
@@ -29,7 +32,7 @@
           $('[data-toggle="tooltip"]').tooltip();
       });
     </script>
-    <div id="wrapper" ng-app='myApp'>
+    <div id="wrapper" >
       <div ng-view="">
 
       </div>
