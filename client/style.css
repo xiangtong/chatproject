@@ -10,7 +10,7 @@ body {
 }
 
 .container.reglogin{
-  padding-top: 30px;
+  padding-top: 20px;
 }
 .container.messagebody{
   padding-top: 10px;
@@ -95,13 +95,13 @@ input[type="submit"]{
 .pmessagelistcol{
 	border: 1px dotted grey;
 	border-radius: 5px;
-	height: 710px;
+	height: 660px;
 }
 .messagelistcol{
 	border-top: 1px dotted grey;
 	border-bottom: 1px dotted grey;
 	border-radius: 5px;
-	height: 710px;
+	height: 660px;
 }
 #treeimg{
 	opacity: 0.5;
@@ -151,7 +151,7 @@ h3 {
 .description a:focus { border-bottom: 1px dotted #19b9e7; }
 
 .form-box {
-	margin-top: 70px;
+	margin-top: 40px;
   padding: 35px 35px 35px 35px;
 	background: #f3f3f3;
 	-moz-border-radius: 4px 4px 4px 4px; -webkit-border-radius: 4px 4px 4px 4px; border-radius: 4px 4px 4px 4px;
